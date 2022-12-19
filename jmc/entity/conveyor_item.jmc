@@ -1,0 +1,134 @@
+function Entity.TickConveyorItem() {
+    execute 
+        positioned ~-0.004 ~1.7 ~0.755 
+        if block ~ ~-0.1 ~ #conveys:belts 
+        run {
+            
+        Entity.ItemOnActiveConveyor();
+    }
+    execute 
+        positioned ~-0.004 ~1.7 ~0.755 
+        unless block ~ ~-0.1 ~ #conveys:belts 
+        run {
+
+        execute align y run summon minecraft:item ~0.15 ~1 ~ {PickupDelay:20,Motion:[0.15,0.0,0.0],Tags:["conveys.subject"],Item:{id:"minecraft:oak_boat",Count:1b}}
+        tag @s add conveys.object;
+        execute as @e[tag=conveys.subject,limit=1] run {
+            data modify entity @s Item set from entity @e[tag=conveys.object,limit=1] ArmorItems[3];
+            tag @s remove conveys.subject;
+        }
+        tag @s remove conveys.object;
+
+        kill @s;
+    }
+}
+
+function Entity.PositionConveyorItem() {
+    execute positioned ~0.004 ~-1.7 ~-0.755 run tp @s ~ ~-1024 ~;
+    tag @s remove conveys.conveyor_item_to_position;
+}
+
+function Entity.ItemOnActiveConveyor() {
+    execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=east]  run {
+        execute positioned ~0.004 ~-1.7 ~-0.755 run Entity.MoveItemEast();
+    }
+    execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=north] run {
+        execute positioned ~0.004 ~-1.7 ~-0.755 run Entity.MoveItemNorth();
+    }
+    execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=south] run {
+        execute positioned ~0.004 ~-1.7 ~-0.755 run Entity.MoveItemSouth();
+    }
+    execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=west]  run {
+        execute positioned ~0.004 ~-1.7 ~-0.755 run Entity.MoveItemWest();
+    }
+    
+    execute positioned ~ ~-0.1 ~ align xyz run {
+        execute if block ~ ~ ~ minecraft:white_glazed_terracotta[facing=east]  run {
+            setblock ~ ~ ~ minecraft:orange_glazed_terracotta[facing=east];
+        }
+        execute if block ~ ~ ~ minecraft:white_glazed_terracotta[facing=north] run {
+           setblock ~ ~ ~ minecraft:orange_glazed_terracotta[facing=north];
+        }
+        execute if block ~ ~ ~ minecraft:white_glazed_terracotta[facing=south] run {
+            setblock ~ ~ ~ minecraft:orange_glazed_terracotta[facing=south];
+        }
+        execute if block ~ ~ ~ minecraft:white_glazed_terracotta[facing=west]  run {
+           setblock ~ ~ ~ minecraft:orange_glazed_terracotta[facing=west];
+        }
+        summon marker ~ ~ ~ {Tags:["conveys.inactive_conveyor"]}
+    }
+
+
+}
+
+function Entity.MoveItemEast() { 
+    execute run tp @s ~0.15 ~ ~;
+    execute run Entity.DisplaceItemZ();
+}
+
+function Entity.MoveItemNorth() { 
+    execute run tp @s ~ ~ ~-0.15;
+    execute run Entity.DisplaceItemX();
+}
+
+function Entity.MoveItemSouth() { 
+    execute run tp @s ~ ~ ~0.15;
+    execute run Entity.DisplaceItemX();
+}
+
+function Entity.MoveItemWest() { 
+    execute run tp @s ~-0.15 ~ ~;
+    execute run Entity.DisplaceItemZ();
+}
+
+function Entity.DisplaceItemX() {
+    // Get the item's X-position times 1000
+    execute store result score $align_distance_x __variable__ run data get entity @s Pos[0] 1000;
+    // Offset position by the offset of the armour stand entity
+    // relative to the visual position of the item
+    $align_distance_x += 4;
+    // Modulo the variable to only leave the position inside the block.
+    $align_distance_x %= 1000;
+    // Displace the position by half a block.
+    $align_distance_x -= 500;
+    // Invert the position (0 - $align_distance_x)
+    $temporary = $align_distance_x;
+    $align_distance_x = 0;
+    $align_distance_x -= $temporary;
+    // If we have any value left, apply it every other tick.
+    if (!$align_distance_x = 0) {
+        if ($tick_modulo = 0) {
+            // Apply the value which is *1000, by *0.00025 so that we 
+            // do not move the complete distance in a tick.
+            execute store result score $temporary __variable__ run data get entity @s Pos[0] 4000;
+            $align_distance_x += $temporary;
+            execute store result entity @s Pos[0] double 0.00025 run $align_distance_x.get();
+        }
+    }
+}
+
+function Entity.DisplaceItemZ() {
+    // Get the item's Z-position times 1000
+    execute store result score $align_distance_z __variable__ run data get entity @s Pos[2] 1000;
+    // Offset position by the offset of the armour stand entity
+    // relative to the visual position of the item
+    $align_distance_z += 755;
+    // Modulo the variable to only leave the position inside the block.
+    $align_distance_z %= 1000;
+    // Displace the position by half a block.
+    $align_distance_z -= 500;
+    // Invert the position (0 - $align_distance_z)
+    $temporary = $align_distance_z;
+    $align_distance_z = 0;
+    $align_distance_z -= $temporary;
+    // If we have any value left, apply it every other tick.
+    if (!$align_distance_z = 0) {
+        if ($tick_modulo = 0) {
+            // Apply the value which is *1000, by *0.00025 so that we 
+            // do not move the complete distance in a tick.
+            execute store result score $temporary __variable__ run data get entity @s Pos[2] 4000;
+            $align_distance_z += $temporary;
+            execute store result entity @s Pos[2] double 0.00025 run $align_distance_z.get();
+        }
+    }
+}

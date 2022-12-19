@@ -1,0 +1,15 @@
+@import "entity/entity_main";
+
+new tags.blocks(belts) {
+  "values": [
+    "minecraft:white_glazed_terracotta",
+    "minecraft:orange_glazed_terracotta"
+  ]
+}
+
+function __tick__() {
+    $tick += 1;
+    $tick_modulo =  $tick;
+    $tick_modulo %= 2;
+    execute as @e run Entity.Main();
+}

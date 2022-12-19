@@ -1,0 +1,24 @@
+function Entity.TickItem() {
+    execute 
+        if block ~ ~-0.1 ~ #conveys:belts 
+        run {
+            
+        execute align y run summon minecraft:armor_stand ~0.004 ~-1.7 ~-0.755 {Marker:1b,Invisible:1b,Tags:["conveys.subject","conveys.conveyor_item"],Pose:{Head:[90f,0f,0f]},ArmorItems:[{},{},{},{id:"minecraft:oak_boat",Count:1b}]}
+        tag @s add conveys.object;
+        execute as @e[tag=conveys.subject,limit=1] run {
+            data modify entity @s ArmorItems[3] set from entity @e[tag=conveys.object,limit=1] Item;
+            tp @s ~ ~1024 ~;
+            tag @s add conveys.conveyor_item_to_position;
+            tag @s remove conveys.subject;
+        }
+        tag @s remove conveys.object;
+
+        data modify entity @s PickupDelay set value 32767;
+        tag @s add conveys.item_to_remove;
+    }
+}
+
+function Entity.RemoveItem() {
+    tp @s ~ ~-1024 ~;
+    kill @s;
+}
