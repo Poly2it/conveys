@@ -1,3 +1,2 @@
-execute store result score $temporary __variable__ run data get entity @s Pos[0] 4000
-scoreboard players operation $align_distance_x __variable__ += $temporary __variable__
-execute store result entity @s Pos[0] double 0.00025 run scoreboard players get $align_distance_x __variable__
+summon armor_stand ~ ~-0.6875 ~ {Small:1b,Marker:1b,Invisible:1b,Tags:["conveys.subject","conveys.conveyor_item","conveys.block_display"],ArmorItems:[{},{},{},{id:"minecraft:redstone",Count:1b}]}
+execute as @e[tag=conveys.subject,limit=1] run function conveys:__private__/anonymous/3

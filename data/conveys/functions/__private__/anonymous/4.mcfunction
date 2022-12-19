@@ -1,5 +1,2 @@
-execute align y run summon minecraft:item ~0.15 ~1 ~ {PickupDelay:20,Motion:[0.15,0.0,0.0],Tags:['conveys.subject'],Item:{id:'minecraft:oak_boat',Count:1b}}
-tag @s add conveys.object
-execute as @e[tag=conveys.subject,limit=1] run function conveys:__private__/anonymous/3
-tag @s remove conveys.object
-kill @s
+execute positioned ~-0.004 ~1.7 ~0.755 unless block ~ ~-0.1 ~ #conveys:belts run function conveys:entity/killconveyoritem
+execute positioned ~-0.004 ~1.7 ~0.755 if block ~ ~-0.1 ~ #conveys:belts run function conveys:entity/itemonactiveconveyor

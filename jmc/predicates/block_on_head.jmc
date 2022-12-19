@@ -1,0 +1,11 @@
+new predicates(block_on_head) {
+  "condition": "minecraft:entity_properties",
+  "entity": "this",
+  "predicate": {
+    "equipment": {
+      "head": {
+        "tag": "conveys:all_item_blocks"
+      }
+    }
+  }
+}

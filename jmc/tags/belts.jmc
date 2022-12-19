@@ -1,0 +1,6 @@
+new tags.blocks(belts) {
+  "values": [
+    "minecraft:white_glazed_terracotta",
+    "minecraft:orange_glazed_terracotta"
+  ]
+}

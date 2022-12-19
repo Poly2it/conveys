@@ -1,11 +1,6 @@
 @import "entity/entity_main";
-
-new tags.blocks(belts) {
-  "values": [
-    "minecraft:white_glazed_terracotta",
-    "minecraft:orange_glazed_terracotta"
-  ]
-}
+@import "predicates/*";
+@import "tags/*";
 
 function __tick__() {
     $tick += 1;
