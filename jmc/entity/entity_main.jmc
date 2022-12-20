@@ -3,9 +3,6 @@
 @import "inactive_conveyor";
 
 function Entity.Main() {
-    execute if entity @s[tag=conveys.item_to_remove] run {
-        Entity.RemoveItem();
-    }
     execute if entity @s[tag=conveys.conveyor_item_to_position] at @s run {
         Entity.PositionConveyorItem();
     }

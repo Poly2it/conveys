@@ -1,2 +1,5 @@
-summon armor_stand ~ ~-0.6875 ~ {Small:1b,Marker:1b,Invisible:1b,Tags:["conveys.subject","conveys.conveyor_item","conveys.block_display"],ArmorItems:[{},{},{},{id:"minecraft:redstone",Count:1b}]}
-execute as @e[tag=conveys.subject,limit=1] run function conveys:__private__/anonymous/3
+say block_display
+tp @s ~ ~-0.6875 ~
+tag @s add conveys.block_display
+data modify entity @s Small set value 1b
+scoreboard players set __if_else__ __variable__ 1

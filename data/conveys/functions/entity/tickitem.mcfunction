@@ -1,1 +1,1 @@
-execute if block ~ ~-0.1 ~ #conveys:belts run function conveys:__private__/anonymous/0
+execute if entity @s[tag=!conveys.item_to_remove] if block ~ ~-0.1 ~ #conveys:belts run function conveys:__private__/anonymous/0

@@ -1,10 +1,10 @@
-{
+new predicates(3d_model) {
   "condition": "minecraft:entity_properties",
   "entity": "this",
   "predicate": {
     "equipment": {
       "head": {
-        "tag": "conveys:all_blocks"
+        "tag": "conveys:3d_models"
       }
     }
   }

@@ -1,4 +1,2 @@
-data modify entity @s ArmorItems[3] set from entity @e[tag=conveys.object,limit=1] Item
-tp @s ~ ~1024 ~
-tag @s add conveys.conveyor_item_to_position
+data modify entity @s Item set from entity @e[tag=conveys.object,limit=1] ArmorItems[3]
 tag @s remove conveys.subject

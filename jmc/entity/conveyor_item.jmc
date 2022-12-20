@@ -27,6 +27,11 @@ function Entity.TickConveyorItem() {
     }
 }
 
+function Entity.PositionConveyorItem() {
+    tp @s ~ ~-1024 ~;
+    tag @s remove conveys.conveyor_item_to_position;
+}
+
 function Entity.KillConveyorItem() {
     execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=east] run {
         execute align y run summon minecraft:item ~0.15 ~1 ~ {PickupDelay:20,Motion:[0.15,0.1,0.0],Tags:["conveys.subject"],Item:{id:"minecraft:oak_boat",Count:1b}}
@@ -49,16 +54,6 @@ function Entity.KillConveyorItem() {
     tag @s remove conveys.object;
 
     kill @s;
-}
-
-function Entity.PositionConveyorItem() {
-    execute if entity @s[tag=conveys.item_display] run {
-        execute positioned ~0.004 ~-1.7 ~-0.755 run tp @s ~ ~-1024 ~;
-    }
-    execute if entity @s[tag=conveys.block_display] run {
-        execute positioned ~ ~-0.6875 ~ run tp @s ~ ~-1024 ~;
-    }
-    tag @s remove conveys.conveyor_item_to_position;
 }
 
 function Entity.ItemOnActiveConveyor() {

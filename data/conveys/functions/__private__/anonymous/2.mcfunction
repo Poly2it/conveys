@@ -1,5 +1,2 @@
-data modify entity @s ArmorItems[3] set from entity @e[tag=conveys.object,limit=1] Item
-execute if predicate conveys:block_on_head run function conveys:__private__/anonymous/1
-tp @s ~ ~1024 ~
-tag @s add conveys.conveyor_item_to_position
-tag @s remove conveys.subject
+execute positioned ~-0.004 ~1.7 ~0.755 unless block ~ ~-0.1 ~ #conveys:belts run function conveys:entity/killconveyoritem
+execute positioned ~-0.004 ~1.7 ~0.755 if block ~ ~-0.1 ~ #conveys:belts run function conveys:entity/itemonactiveconveyor

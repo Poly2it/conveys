@@ -1,51 +1,39 @@
 function Entity.TickItem() {
     execute 
-        if block ~ ~-0.1 ~ #conveys:belts 
-        run {
-            
+    if entity @s[tag=!conveys.item_to_remove]
+    if block ~ ~-0.1 ~ #conveys:belts 
+    run {   
         Entity.InitializeConveyorItem();
 
-        data modify entity @s PickupDelay set value 32767;
         tag @s add conveys.item_to_remove;
+        data merge entity @s {Age:5993,PickupDelay:32767}
     }
 }
 
 function Entity.InitializeConveyorItem() {
-    $item_is_block = 0;
     tag @s add conveys.object;
 
-    // TODO: rewrite messy code
-    //       modify base entity instead of creating a new one, many unneccesary operations
-
-    execute align y run summon minecraft:armor_stand ~0.004 ~-1.7 ~-0.755 {Marker:1b,Invisible:1b,Tags:["conveys.subject","conveys.conveyor_item","conveys.item_display"],Pose:{Head:[90f,0f,0f]},ArmorItems:[{},{},{},{id:"minecraft:oak_boat",Count:1b}]}
-    execute as @e[tag=conveys.subject,limit=1] run {
+    execute align y run summon minecraft:armor_stand ~ ~1024 ~ {Marker:1b,Invisible:1b,Tags:["conveys.subject","conveys.conveyor_item"],Pose:{Head:[90f,0f,0f]},ArmorItems:[{},{},{},{id:"minecraft:oak_boat",Count:1b}]}
+    execute as @e[tag=conveys.subject,limit=1] at @s run {
+        // transfer item in item entity to armor stand
         data modify entity @s ArmorItems[3] set from entity @e[tag=conveys.object,limit=1] Item;
-
-        execute if predicate conveys:block_on_head run {
-            kill @s;
-            $item_is_block = 1;
+        if (predicate conveys:3d_model) {
+            // block model
+            say "block_display";
+            tp @s ~ ~-0.6875 ~;
+            tag @s add conveys.block_display;
+            
+            data modify entity @s Small set value 1b;
+        } else {
+            say "item_display";
+            // item model
+            tp @s ~0.004 ~-1.7 ~-0.755;
+            tag @s add conveys.item_display;
         }
 
-        tp @s ~ ~1024 ~;
         tag @s add conveys.conveyor_item_to_position;
         tag @s remove conveys.subject;
     }
-    if ($item_is_block = 1) {
-        summon armor_stand ~ ~-0.6875 ~ {Small:1b,Marker:1b,Invisible:1b,Tags:["conveys.subject","conveys.conveyor_item","conveys.block_display"],ArmorItems:[{},{},{},{id:"minecraft:redstone",Count:1b}]}
-
-        execute as @e[tag=conveys.subject,limit=1] run {
-            data modify entity @s ArmorItems[3] set from entity @e[tag=conveys.object,limit=1] Item;
-    
-            tp @s ~ ~1024 ~;
-            tag @s add conveys.conveyor_item_to_position;
-            tag @s remove conveys.subject;
-        }
-    }
 
     tag @s remove conveys.object;
-}
-
-function Entity.RemoveItem() {
-    tp @s ~ ~-1024 ~;
-    kill @s;
 }
