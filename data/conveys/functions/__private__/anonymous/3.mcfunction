@@ -1,2 +1,2 @@
-data modify entity @s Item set from entity @e[tag=conveys.object,limit=1] ArmorItems[3]
-tag @s remove conveys.subject
+execute positioned ~ ~0.6875 ~ if block ~ ~-0.1 ~ #conveys:belts run function conveys:entity/itemonactiveconveyor
+execute positioned ~ ~0.6875 ~ unless block ~ ~-0.1 ~ #conveys:belts at @s run function conveys:entity/undirectionalkillconveyoritem

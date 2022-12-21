@@ -1,2 +1,2 @@
-execute positioned ~-0.004 ~1.7 ~0.755 unless block ~ ~-0.1 ~ #conveys:belts run function conveys:entity/killconveyoritem
 execute positioned ~-0.004 ~1.7 ~0.755 if block ~ ~-0.1 ~ #conveys:belts run function conveys:entity/itemonactiveconveyor
+execute positioned ~-0.004 ~1.7 ~0.755 unless block ~ ~-0.1 ~ #conveys:belts at @s run function conveys:entity/undirectionalkillconveyoritem

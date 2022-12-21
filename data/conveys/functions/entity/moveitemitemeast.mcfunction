@@ -1,0 +1,1 @@
+execute at @s positioned ~ ~ ~0.755 align z positioned ~0.25 ~ ~-0.255 facing entity @s feet positioned ^ ^ ^0.15 run function conveys:__private__/anonymous/7

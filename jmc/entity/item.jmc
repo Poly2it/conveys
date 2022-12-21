@@ -19,13 +19,11 @@ function Entity.InitializeConveyorItem() {
         data modify entity @s ArmorItems[3] set from entity @e[tag=conveys.object,limit=1] Item;
         if (predicate conveys:3d_model) {
             // block model
-            say "block_display";
             tp @s ~ ~-0.6875 ~;
             tag @s add conveys.block_display;
             
             data modify entity @s Small set value 1b;
         } else {
-            say "item_display";
             // item model
             tp @s ~0.004 ~-1.7 ~-0.755;
             tag @s add conveys.item_display;

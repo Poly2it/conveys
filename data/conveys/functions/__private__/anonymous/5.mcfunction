@@ -1,2 +1,4 @@
-execute positioned ~0.004 ~-1.7 ~-0.755 run function conveys:entity/moveitemnorth
-execute unless block ~ ~-0.1 ~-0.15 #conveys:belts run function conveys:entity/killconveyoritem
+execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=east] positioned ~ ~-0.6875 ~ run function conveys:entity/moveblockitemeast
+execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=north] positioned ~ ~-0.6875 ~ run function conveys:entity/moveblockitemnorth
+execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=south] positioned ~ ~-0.6875 ~ run function conveys:entity/moveblockitemsouth
+execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=west] positioned ~ ~-0.6875 ~ run function conveys:entity/moveblockitemwest

@@ -1,2 +1,2 @@
-execute positioned ~ ~-0.6875 ~ run function conveys:entity/moveitemwest
-execute unless block ~-0.15 ~-0.1 ~ #conveys:belts positioned ~ ~-0.6875 ~ run function conveys:entity/killconveyoritem
+execute positioned ~ ~0.6875 ~ unless block ~ ~-0.1 ~ #conveys:belts at @s positioned ~ ~0.6875 ~ run function conveys:entity/killconveyoritem
+tp @s ~ ~ ~

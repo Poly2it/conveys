@@ -1,29 +1,24 @@
 function Entity.TickConveyorItem() {
     // conveys.item_display
     execute if entity @s[tag=conveys.item_display] run {
-        execute
-        positioned ~-0.004 ~1.7 ~0.755 
-        unless block ~ ~-0.1 ~ #conveys:belts 
-        run {
-            Entity.KillConveyorItem();
-        }
-
         execute 
-        positioned ~-0.004 ~1.7 ~0.755 
+        positioned ITEM_MODEL_OFFSET
         if block ~ ~-0.1 ~ #conveys:belts 
         run {
             Entity.ItemOnActiveConveyor();
         }
+        execute positioned ITEM_MODEL_OFFSET unless block ~ ~-0.1 ~ #conveys:belts at @s run Entity.UndirectionalKillConveyorItem();
     }
 
     // conveys.block_display
     execute if entity @s[tag=conveys.block_display] run {
         execute 
-        positioned ~ ~0.6875 ~
+        positioned BLOCK_MODEL_OFFSET
         if block ~ ~-0.1 ~ #conveys:belts 
         run {
             Entity.ItemOnActiveConveyor();
         }
+        execute positioned BLOCK_MODEL_OFFSET unless block ~ ~-0.1 ~ #conveys:belts at @s run Entity.UndirectionalKillConveyorItem();
     }
 }
 
@@ -32,66 +27,34 @@ function Entity.PositionConveyorItem() {
     tag @s remove conveys.conveyor_item_to_position;
 }
 
-function Entity.KillConveyorItem() {
-    execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=east] run {
-        execute align y run summon minecraft:item ~0.15 ~1 ~ {PickupDelay:20,Motion:[0.15,0.1,0.0],Tags:["conveys.subject"],Item:{id:"minecraft:oak_boat",Count:1b}}
-    }
-    execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=north] run {
-        execute align y run summon minecraft:item ~ ~ ~-0.15 {PickupDelay:20,Motion:[0.0,0.1,-0.15],Tags:["conveys.subject"],Item:{id:"minecraft:oak_boat",Count:1b}}
-    }
-    execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=south] run {
-        execute align y run summon minecraft:item ~ ~ ~0.15 {PickupDelay:20,Motion:[0.0,0.1,0.15],Tags:["conveys.subject"],Item:{id:"minecraft:oak_boat",Count:1b}}
-    }
-    execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=west] run {
-        execute align y run summon minecraft:item ~-0.15 ~ ~ {PickupDelay:20,Motion:[-0.15,0.1,0.0],Tags:["conveys.subject"],Item:{id:"minecraft:oak_boat",Count:1b}}
-    }
-    
-    tag @s add conveys.object;
-    execute as @e[tag=conveys.subject,limit=1] run {
-        data modify entity @s Item set from entity @e[tag=conveys.object,limit=1] ArmorItems[3];
-        tag @s remove conveys.subject;
-    }
-    tag @s remove conveys.object;
-
-    kill @s;
-}
-
 function Entity.ItemOnActiveConveyor() {
     execute if entity @s[tag=conveys.item_display] run {
-        execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=east]  run {
-            execute positioned ~0.004 ~-1.7 ~-0.755 run Entity.MoveItemEast();
-            execute unless block ~0.15 ~-0.1 ~ #conveys:belts run Entity.KillConveyorItem();
+        execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=east] positioned REVERSE_ITEM_MODEL_OFFSET  run {
+            Entity.MoveItemItemEast();
         }
-        execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=north] run {
-            execute positioned ~0.004 ~-1.7 ~-0.755 run Entity.MoveItemNorth();
-            execute unless block ~ ~-0.1 ~-0.15 #conveys:belts run Entity.KillConveyorItem();
+        execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=north] positioned REVERSE_ITEM_MODEL_OFFSET run {
+            Entity.MoveItemItemNorth();
         }
-        execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=south] run {
-            execute positioned ~0.004 ~-1.7 ~-0.755 run Entity.MoveItemSouth();
-            execute unless block ~ ~-0.1 ~0.15 #conveys:belts run Entity.KillConveyorItem();
+        execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=south] positioned REVERSE_ITEM_MODEL_OFFSET run {
+            Entity.MoveItemItemSouth();
         }
-        execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=west]  run {
-            execute positioned ~0.004 ~-1.7 ~-0.755 run Entity.MoveItemWest();
-            execute unless block ~-0.15 ~-0.1 ~ #conveys:belts run Entity.KillConveyorItem();
+        execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=west] positioned REVERSE_ITEM_MODEL_OFFSET  run {
+            Entity.MoveItemItemWest();
         }
     }
 
     execute if entity @s[tag=conveys.block_display] run {
-        execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=east]  run {
-            execute positioned ~ ~-0.6875 ~ run Entity.MoveItemEast();
-            execute unless block ~0.15 ~-0.1 ~ #conveys:belts positioned ~ ~-0.6875 ~ run Entity.KillConveyorItem();
+        execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=east] positioned REVERSE_BLOCK_MODEL_OFFSET  run {
+            Entity.MoveBlockItemEast();
         }
-        execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=north] run {
-            execute positioned ~ ~-0.6875 ~ run Entity.MoveItemNorth();
-            execute unless block ~ ~-0.1 ~-0.15 #conveys:belts positioned ~ ~-0.6875 ~ run Entity.KillConveyorItem();
+        execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=north] positioned REVERSE_BLOCK_MODEL_OFFSET run {
+            Entity.MoveBlockItemNorth();
         }
-        execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=south] run {
-            execute positioned ~ ~-0.6875 ~ run Entity.MoveItemSouth();
-            execute unless block ~ ~-0.1 ~0.15 #conveys:belts positioned ~ ~-0.6875 ~ run Entity.KillConveyorItem();
+        execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=south] positioned REVERSE_BLOCK_MODEL_OFFSET run {
+            Entity.MoveBlockItemSouth();
         }
-        execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=west]  run {
-            execute positioned ~ ~-0.6875 ~ run Entity.MoveItemWest();
-            execute unless block ~-0.15 ~-0.1 ~ #conveys:belts positioned ~ ~-0.6875 ~ run Entity.KillConveyorItem();
+        execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=west] positioned REVERSE_BLOCK_MODEL_OFFSET  run {
+            Entity.MoveBlockItemWest();
         }
     }
     
@@ -114,78 +77,105 @@ function Entity.ItemOnActiveConveyor() {
 
 }
 
-function Entity.MoveItemEast() { 
-    execute run tp @s ~0.15 ~ ~;
-    execute run Entity.DisplaceItemZ();
-}
+// item display
+// 
+// yes, we implement this twice to skip a check for a tag on an entity
 
-function Entity.MoveItemNorth() { 
-    execute run tp @s ~ ~ ~-0.15;
-    execute run Entity.DisplaceItemX();
-}
-
-function Entity.MoveItemSouth() { 
-    execute run tp @s ~ ~ ~0.15;
-    execute run Entity.DisplaceItemX();
-}
-
-function Entity.MoveItemWest() { 
-    execute run tp @s ~-0.15 ~ ~;
-    execute run Entity.DisplaceItemZ();
-}
-
-function Entity.DisplaceItemX() {
-    // Get the item's X-position times 1000
-    execute store result score $align_distance_x __variable__ run data get entity @s Pos[0] 1000;
-    // Offset position by the offset of the armour stand entity
-    // relative to the visual position of the item
-    execute if entity @s[tag=conveys.item_display] run {
-        $align_distance_x += 4;
-    }
-    // Modulo the variable to only leave the position inside the block.
-    $align_distance_x %= 1000;
-    // Displace the position by half a block.
-    $align_distance_x -= 500;
-    // Invert the position (0 - $align_distance_x)
-    $temporary = $align_distance_x;
-    $align_distance_x = 0;
-    $align_distance_x -= $temporary;
-    // If we have any value left, apply it every other tick.
-    if (!$align_distance_x = 0) {
-        if ($tick_modulo = 0) {
-            // Apply the value which is *1000, by *0.00025 so that we 
-            // do not move the complete distance in a tick.
-            execute store result score $temporary __variable__ run data get entity @s Pos[0] 4000;
-            $align_distance_x += $temporary;
-            execute store result entity @s Pos[0] double 0.00025 run $align_distance_x.get();
-        }
+function Entity.MoveItemItemEast() { 
+    execute at @s positioned ~ ~ ~0.755 align z positioned ~0.25 ~ ~-0.255 facing entity @s feet positioned ^ ^ ^0.15 run {
+        execute positioned ITEM_MODEL_OFFSET unless block ~ ~-0.1 ~ #conveys:belts at @s positioned ITEM_MODEL_OFFSET run Entity.KillConveyorItem();
+        tp @s ~ ~ ~;
     }
 }
 
-function Entity.DisplaceItemZ() {
-    // Get the item's Z-position times 1000
-    execute store result score $align_distance_z __variable__ run data get entity @s Pos[2] 1000;
-    // Offset position by the offset of the armour stand entity
-    // relative to the visual position of the item
-    execute if entity @s[tag=conveys.item_display] run {
-        $align_distance_z += 755;
+function Entity.MoveItemItemNorth() { 
+    execute at @s positioned ~ ~ ~0.004 align x positioned ~0.496 ~ ~-0.25 facing entity @s feet positioned ^ ^ ^0.15 run {
+        execute positioned ITEM_MODEL_OFFSET unless block ~ ~-0.1 ~ #conveys:belts at @s positioned ITEM_MODEL_OFFSET run Entity.KillConveyorItem();
+        tp @s ~ ~ ~;
     }
-    // Modulo the variable to only leave the position inside the block.
-    $align_distance_z %= 1000;
-    // Displace the position by half a block.
-    $align_distance_z -= 500;
-    // Invert the position (0 - $align_distance_z)
-    $temporary = $align_distance_z;
-    $align_distance_z = 0;
-    $align_distance_z -= $temporary;
-    // If we have any value left, apply it every other tick.
-    if (!$align_distance_z = 0) {
-        if ($tick_modulo = 0) {
-            // Apply the value which is *1000, by *0.00025 so that we 
-            // do not move the complete distance in a tick.
-            execute store result score $temporary __variable__ run data get entity @s Pos[2] 4000;
-            $align_distance_z += $temporary;
-            execute store result entity @s Pos[2] double 0.00025 run $align_distance_z.get();
-        }
+}
+
+function Entity.MoveItemItemSouth() { 
+    execute at @s positioned ~ ~ ~0.004 align x positioned ~0.496 ~ ~0.25 facing entity @s feet positioned ^ ^ ^0.15 run {
+        execute positioned ITEM_MODEL_OFFSET unless block ~ ~-0.1 ~ #conveys:belts at @s positioned ITEM_MODEL_OFFSET run Entity.KillConveyorItem();
+        tp @s ~ ~ ~;
     }
+}
+
+function Entity.MoveItemItemWest() { 
+    execute at @s positioned ~ ~ ~0.755 align z positioned ~-0.25 ~ ~-0.255 facing entity @s feet positioned ^ ^ ^0.15 run {
+        execute positioned ITEM_MODEL_OFFSET unless block ~ ~-0.1 ~ #conveys:belts at @s positioned ITEM_MODEL_OFFSET run Entity.KillConveyorItem();
+        tp @s ~ ~ ~;
+    }
+}
+
+// block display
+// 
+// yes, we implement this twice to skip a check for a tag on an entity
+
+function Entity.MoveBlockItemEast() { 
+    execute at @s positioned ~ ~ ~ align z positioned ~0.25 ~ ~0.5 facing entity @s feet positioned ^ ^ ^0.15 run {
+        execute positioned BLOCK_MODEL_OFFSET unless block ~ ~-0.1 ~ #conveys:belts at @s positioned BLOCK_MODEL_OFFSET run Entity.KillConveyorItem();
+        tp @s ~ ~ ~;
+    }
+}
+
+function Entity.MoveBlockItemNorth() { 
+    execute at @s positioned ~ ~ ~ align x positioned ~0.5 ~ ~-0.25 facing entity @s feet positioned ^ ^ ^0.15 run {
+        execute positioned BLOCK_MODEL_OFFSET unless block ~ ~-0.1 ~ #conveys:belts at @s positioned BLOCK_MODEL_OFFSET run Entity.KillConveyorItem();
+        tp @s ~ ~ ~;
+    }
+}
+
+function Entity.MoveBlockItemSouth() { 
+    execute at @s positioned ~ ~ ~ align x positioned ~0.5 ~ ~0.25 facing entity @s feet positioned ^ ^ ^0.15 run {
+        execute positioned BLOCK_MODEL_OFFSET unless block ~ ~-0.1 ~ #conveys:belts at @s positioned BLOCK_MODEL_OFFSET run Entity.KillConveyorItem();
+        tp @s ~ ~ ~;
+    }
+}
+
+function Entity.MoveBlockItemWest() { 
+    execute at @s positioned ~ ~ ~ align z positioned ~-0.25 ~ ~0.5 facing entity @s feet positioned ^ ^ ^0.15 run {
+        execute positioned BLOCK_MODEL_OFFSET unless block ~ ~-0.1 ~ #conveys:belts at @s positioned BLOCK_MODEL_OFFSET run Entity.KillConveyorItem();
+        tp @s ~ ~ ~;
+    }
+}
+
+function Entity.KillConveyorItem() {
+    execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=east] run {
+        execute align y run summon minecraft:item ~0.15 ~1 ~ {PickupDelay:20,Motion:[0.15,0.1,0.0],Tags:["conveys.subject"],Item:{id:"minecraft:oak_boat",Count:1b}}
+    }
+    execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=north] run {
+        execute align y run summon minecraft:item ~ ~ ~-0.15 {PickupDelay:20,Motion:[0.0,0.1,-0.15],Tags:["conveys.subject"],Item:{id:"minecraft:oak_boat",Count:1b}}
+    }
+    execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=south] run {
+        execute align y run summon minecraft:item ~ ~ ~0.15 {PickupDelay:20,Motion:[0.0,0.1,0.15],Tags:["conveys.subject"],Item:{id:"minecraft:oak_boat",Count:1b}}
+    }
+    execute if block ~ ~-0.1 ~ minecraft:white_glazed_terracotta[facing=west] run {
+        execute align y run summon minecraft:item ~-0.15 ~ ~ {PickupDelay:20,Motion:[-0.15,0.1,0.0],Tags:["conveys.subject"],Item:{id:"minecraft:oak_boat",Count:1b}}
+    }
+    
+    // transfer data to item
+    tag @s add conveys.object;
+    execute as @e[tag=conveys.subject,limit=1] run {
+        data modify entity @s Item set from entity @e[tag=conveys.object,limit=1] ArmorItems[3];
+        tag @s remove conveys.subject;
+    }
+    tag @s remove conveys.object;
+
+    kill @s;
+}
+
+function Entity.UndirectionalKillConveyorItem() {
+    execute align y run summon minecraft:item ~ ~ ~ {PickupDelay:20,Motion:[0.0,0.0,0.0],Tags:["conveys.subject"],Item:{id:"minecraft:oak_boat",Count:1b}}
+    
+    // transfer data to item
+    tag @s add conveys.object;
+    execute as @e[tag=conveys.subject,limit=1] run {
+        data modify entity @s Item set from entity @e[tag=conveys.object,limit=1] ArmorItems[3];
+        tag @s remove conveys.subject;
+    }
+    tag @s remove conveys.object;
+
+    kill @s;
 }

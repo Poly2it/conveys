@@ -1,2 +1,2 @@
 execute if entity @s[tag=conveys.item_display] run function conveys:__private__/anonymous/2
-execute if entity @s[tag=conveys.block_display] run execute positioned ~ ~0.6875 ~ if block ~ ~-0.1 ~ #conveys:belts run function conveys:entity/itemonactiveconveyor
+execute if entity @s[tag=conveys.block_display] run function conveys:__private__/anonymous/3
