@@ -7,7 +7,7 @@
 A data pack that adds conveyor belts and stuff. 
 
 ## Build instructions
-You likely won't need to build the data pack, as the compiled version comes packed with the source code in this repository.  
+You likely won't need to build the data pack, as the compiled version comes packed with the source code of this repository.  
 For normal use, just drag the downloaded repository into your `datapacks/` folder and type `/reload`.
 1. Install JMC as per the instructions available in https://github.com/WingedSeal/jmc.
 2. Clone the repository in your `datapacks/` folder.
